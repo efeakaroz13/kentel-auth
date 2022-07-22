@@ -10,7 +10,7 @@ EDITOR:VSCODE
 import subprocess
 import os
 
-class db:
+class kauth:
 	def __init__(self,project_name):
 		self.projname = project_name
 
