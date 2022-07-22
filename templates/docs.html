@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kentel Auth API Documentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h2>kentel-auth Official Documentation</h2><br>
+        <h3> Setup</h3>
+        <p>First clone our repository with this command:</p>
+        <code>git clone https://github.com/efeakaroz13/kentel-auth</code><br><br>
+        <p>Then you need to setup the requirements and the C program which is the core of module.</p>
+        <code>
+            python3 -m pip install -r requirements.txt<br> 
+            gcc -o auth-module auth.c
+        </code>
+        <p>You are ready to go!</p>
+        <br><br>
+        <h3>Usage</h3>
+        <h4>Python usage</h4>
+        <i>Note: all functions returns json: {"SCC":Bool}</i>
+        <p>First of all define your project name:</p>
+        <code>myproject = kauth("myproject")</code>
+        <br>
+        <br>
+        <p>Register</p>
+        <code>myproject.createuser(username="",password="",fullname=None,city=None,birthyear=None,talents=None)</code>
+        <p>Explanation of this: username and password are required paramaters for using .createuser function but other ones are not required they are optional.</p>
+        <br><br>
+        <p>Login</p>
+        <code>myproject.login(username="",password="")</code>
+        <p>You can use this function with just your username and password!</p>
+        <br><br>
+        <p>User Information(JSON)</p>
+        <code>myproject.getuser(username)</code>
+        <p>This function displays all information about the user.</p><br><br>
+
+        <p>Change Password</p>
+        <code>myproject.changepassword(username,oldpassword,newpassword)</code>
+        <p>You need to specify the old password while using this function. it basically changes your password with python(auth-module can't handle it.)</p>
+        <br><br>
+        <p>Removing user</p>
+        <code>myproject.remove(username,password)</code>
+        <p>You need to enter username and password for removing the user from system. It completely deletes user from system</p>
+        <br><br><br>
+        <i>Copyright (c) 2022 Efe Akaröz</i>
+    </div>
+    
+</body>
+</html>
