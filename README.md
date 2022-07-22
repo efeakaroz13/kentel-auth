@@ -3,12 +3,12 @@
 
 # Installation
 ## C Module commandline installation
-´´´
+```
 gcc -o auth-module auth.c
-´´´
+```
 ## Python Installation
-´´´
+```
 python3 -m pip install -r requirements.txt
-´´´
+```
 
 
