@@ -18,7 +18,7 @@ def index():
 @app.route("/login",methods=["POST","GET"])
 def login():
     if request.method == "POST":
-        projectname = request.args.get("projectname")
+        projectname = request.args.get("project")
         username = request.form.get("username")
         password = request.form.get("password")
 
@@ -80,11 +80,13 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         project = request.args.get("project")
+
         projname = request.args.get("project")
+        
         fullname = request.form.get("fullname")
         city = request.form.get("city")
         talents = request.form.get("talents")
-
+        birthyear= request.form.get("birthyear")
         if username == None or password == None or project==None:
             return {"SCC":False,"err":"MISSING INFORMATION"}
 
@@ -95,12 +97,12 @@ def register():
         try:
             open(f"users/{username}.K7USERFILE","r")
 
-            return {"SCC":False,"err":"USER EXISTS","project":self.projname}
+            return {"SCC":False,"err":"USER EXISTS","project":projname}
         except:
             checkout = str(subprocess.check_output(f"./auth-module login {username} {password}",shell=True))
             try:
                 checkout.split("200")[1]
-                return {"SCC":False,"err":"USER EXISTS","project":self.projname}
+                return {"SCC":False,"err":"USER EXISTS","project":projname}
 
             except:
 
