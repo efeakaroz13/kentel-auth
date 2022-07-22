@@ -1,14 +1,20 @@
-from black import err
-from flask import Flask,request,redirect
+"Author: Efe Akaröz"
+from pydoc import render_doc
+from flask import Flask, render_template,request,redirect
 from flask_cors import CORS
 import json
 import subprocess
+import os
 
 #NOTE WEB SERVER OPTION IS STILL IN DEVELOPMENT
 
 app = Flask(__name__)
 CORS(app)
 
+
+@app.route("/")
+def index():
+    return render_template("docs.html")
 @app.route("/login",methods=["POST","GET"])
 def login():
     if request.method == "POST":
@@ -68,3 +74,68 @@ def login():
         except Exception as err_internal:
             return {"SCC":False,"err":f"INTERNAL SERVER ERROR \n {str(err_internal)}","code":500}
 
+@app.route("/register",methods=["POST","GET"])
+def register():
+    if request.method =="POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        project = request.args.get("project")
+        projname = request.args.get("project")
+        fullname = request.form.get("fullname")
+        city = request.form.get("city")
+        talents = request.form.get("talents")
+
+        if username == None or password == None or project==None:
+            return {"SCC":False,"err":"MISSING INFORMATION"}
+
+        try:
+            os.listdir("users")
+        except:
+            os.system("mkdir users")
+        try:
+            open(f"users/{username}.K7USERFILE","r")
+
+            return {"SCC":False,"err":"USER EXISTS","project":self.projname}
+        except:
+            checkout = str(subprocess.check_output(f"./auth-module login {username} {password}",shell=True))
+            try:
+                checkout.split("200")[1]
+                return {"SCC":False,"err":"USER EXISTS","project":self.projname}
+
+            except:
+
+                userfile = open(f"users/{username}.K7USERFILE","a")
+                if fullname == None:
+                    fullname = "EMPTY"
+                if city == None:
+                    city="EMPTY"
+                if birthyear ==None:
+                    birthyear = "EMPTY"
+                if talents == None:
+                    talents = "EMPTY"
+
+                userfile.write("PROJECT={};--;\n".format(projname))
+                userfile.write("USERNAME={};--;\n".format(username))
+                userfile.write("PASSWORD={};--;\n".format(password))
+                userfile.write("FULLNAME={};--;\n".format(fullname))
+                userfile.write("CITY={};--;\n".format(city))
+                userfile.write("BIRTHYEAR={};--;\n".format(birthyear))
+                userfile.write("TALENTS={}".format(talents))
+                userfile.write(";--;")
+
+
+                userfile.close()
+                theout = str(subprocess.check_output(f"./auth-module register {username} {password}",shell=True))
+                try:
+                    theout.split("200")[1]
+                    return {"SCC":True,"err":"","project":projname}
+                except:
+                    return {"SCC":False,"err":"C MODULE FAILED!","project":projname}
+
+    if request.method == "GET":
+        return {"SCC":False,"err":"GET METHOD NOT SUPPORTED"}
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True,port=1371,host="0.0.0.0")
