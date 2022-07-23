@@ -1,12 +1,15 @@
 "Author: Efe Akaröz"
 from pydoc import render_doc
 import re
+from winreg import REG_QWORD
 from click import password_option
 from flask import Flask, render_template,request,redirect
 from flask_cors import CORS
 import json
 import subprocess
 import os
+
+from pyparsing import replaceWith
 
 #NOTE WEB SERVER OPTION IS STILL IN DEVELOPMENT
 
@@ -202,5 +205,91 @@ def removeuser():
         # print(e)
         return {"SCC": False, "err": "INVALID EMAIL OR PASSWORD", "project": projname}
 
+@app.route("/change_password",methods=["POST","GET"])
+def change_password():
+    if request.method == "POST":
+        project = request.args.get("project")
+        projname = request.args.get("project")
+        username = request.args.get("username")
+        if username == None:
+            username = request.form.get("username")
+        else:
+            pass
+
+        password = request.form.get("oldpassword")
+        newpassword = request.form.get("newpassword")
+        outcheck = str(subprocess.check_output(
+            f"./auth-module login {username} {password}", shell=True))
+        try:
+            outcheck.split("200")[1]
+
+            authfileopen = open("auth.txt", "r")
+            data = authfileopen.readlines()
+            for a in data:
+
+                if str(a.split("🇹🇷")[0]) == username:
+                    print("a")
+                    if str(a.split("🇹🇷")[1].replace("\n", "")) == password:
+                        print("b")
+                        data[data.index(a)] = f"{username}🇹🇷{newpassword}\n"
+                        break
+                    else:
+                        pass
+                else:
+                    pass
+
+            with open('auth.txt', 'w') as outauth:
+                outauth.writelines(data)
+            userfilepasswordchange = open(f"users/{username}.K7USERFILE", "r")
+            userfilepasswordchangedata = userfilepasswordchange.readlines()
+            userfilepasswordchangedata[2] = f"PASSWORD={newpassword};--;\n"
+            with open(f"users/{username}.K7USERFILE", 'w') as outauth2:
+                outauth2.writelines(userfilepasswordchangedata)
+
+            return {"SCC": True, "err": "", "project": projname}
+
+        except Exception as e:
+
+            return {"SCC": False, "err": "PASSWORD OR USERNAME IS NOT CORRECT", "project": projname}
+    if request.method == "GET":
+        username = request.args.get("username")
+        password = request.args.get("oldpassword")
+        newpassword = request.args.get("newpassword")
+        projname = request.args.get("project")
+        project = request.args.get("project")
+        outcheck = str(subprocess.check_output(
+            f"./auth-module login {username} {password}", shell=True))
+        try:
+            outcheck.split("200")[1]
+
+            authfileopen = open("auth.txt", "r")
+            data = authfileopen.readlines()
+            for a in data:
+
+                if str(a.split("🇹🇷")[0]) == username:
+                    print("a")
+                    if str(a.split("🇹🇷")[1].replace("\n", "")) == password:
+                        print("b")
+                        data[data.index(a)] = f"{username}🇹🇷{newpassword}\n"
+                        break
+                    else:
+                        pass
+                else:
+                    pass
+
+            with open('auth.txt', 'w') as outauth:
+                outauth.writelines(data)
+            userfilepasswordchange = open(f"users/{username}.K7USERFILE", "r")
+            userfilepasswordchangedata = userfilepasswordchange.readlines()
+            userfilepasswordchangedata[2] = f"PASSWORD={newpassword};--;\n"
+            with open(f"users/{username}.K7USERFILE", 'w') as outauth2:
+                outauth2.writelines(userfilepasswordchangedata)
+
+            return {"SCC": True, "err": "", "project": projname}
+
+        except Exception as e:
+
+            return {"SCC": False, "err": "PASSWORD OR USERNAME IS NOT CORRECT", "project": projname}
+    
 if __name__ == "__main__":
     app.run(debug=True,port=1371,host="0.0.0.0")
