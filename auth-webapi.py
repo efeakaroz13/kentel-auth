@@ -1,7 +1,4 @@
 "Author: Efe Akaröz"
-from pydoc import render_doc
-import re
-from winreg import REG_QWORD
 from click import password_option
 from flask import Flask, render_template,request,redirect
 from flask_cors import CORS
