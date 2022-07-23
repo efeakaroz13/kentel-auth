@@ -109,13 +109,13 @@ class kauth:
                             password = i.split("PASSWORD=")[1]
                         except:
                             try:
-                                fullname = i.split("FULLNAME")[1]
+                                fullname = i.split("FULLNAME=")[1]
                             except:
                                 try:
-                                    city = i.split("CITY")[1]
+                                    city = i.split("CITY=")[1]
                                 except:
                                     try:
-                                        birthyear = i.split("BIRTHYEAR")[1]
+                                        birthyear = i.split("BIRTHYEAR=")[1]
 
                                     except:
                                         pass
