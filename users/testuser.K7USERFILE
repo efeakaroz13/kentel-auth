@@ -1,7 +1,0 @@
-PROJECT=yourprojectname;--;
-USERNAME=testuser;--;
-PASSWORD=testpassword;--;
-FULLNAME=John Doe;--;
-CITY=EMPTY;--;
-BIRTHYEAR=EMPTY;--;
-TALENTS=EMPTY;--;
