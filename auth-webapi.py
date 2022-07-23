@@ -137,6 +137,43 @@ def register():
     if request.method == "GET":
         return {"SCC":False,"err":"GET METHOD NOT SUPPORTED"}
 
+@app.route("/user/<username>",methods=["GET"])
+def getuser(username):
+    projname = request.args.get("project")
+    try:
+            profilefile = open(f"users/{username}.K7USERFILE", "r").read()
+    except:
+        return {"SCC": False, "err": "USER DOES NOT EXIST", "platform": projname}
+
+    information = profilefile.split(";--;")
+
+    talents = str(profilefile.split("TALENTS=")[1]).replace(";--;", "")
+    for i in information:
+        try:
+            i.split("TALENTS=")[1]
+            break
+        except:
+            try:
+                projectname = i.split("PROJECT=")[1]
+            except:
+                try:
+                    username = i.split("USERNAME=")[1]
+                except:
+                    try:
+                        password = i.split("PASSWORD=")[1]
+                    except:
+                        try:
+                            fullname = i.split("FULLNAME=")[1]
+                        except:
+                            try:
+                                city = i.split("CITY=")[1]
+                            except:
+                                try:
+                                    birthyear = i.split("BIRTHYEAR=")[1]
+
+                                except:
+                                    pass
+    return {"projectname": projname, "username": username, "password": password, "fullname": fullname, "city": city, "birthyear": birthyear, "talents": talents}
 
 
 if __name__ == "__main__":
